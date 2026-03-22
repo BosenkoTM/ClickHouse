@@ -101,16 +101,37 @@ ORDER BY total_clicks DESC;
 
 ### Блок 1: Базовая выборка и сортировка
 
-1. **Схема:** `trips`. **Поля:** `trip_id`, `total_amount`. **Задача:** Вывести ID и полную стоимость 5 самых дорогих поездок.
+#### Задание 1.
+
+**Схема:** `trips`.
+
+**Поля:** `trip_id`, `total_amount`. 
+
+**Задача.** Вывести ID и полную стоимость 5 самых дорогих поездок.
 <details><summary>Решение</summary><code>SELECT trip_id, total_amount FROM trips ORDER BY total_amount DESC LIMIT 5;</code></details>
 
-2. **Схема:** `hits_UserID_URL`. **Поля:** `UserID`, `URL`. **Задача:** Вывести первые 10 уникальных URL, посещенных пользователями.
+#### Задание 2. 
+**Схема:** `hits_UserID_URL`. 
+
+**Поля:** `UserID`, `URL`. 
+
+**Задача.** Вывести первые 10 уникальных URL, посещенных пользователями.
 <details><summary>Решение</summary><code>SELECT DISTINCT URL FROM hits_UserID_URL LIMIT 10;</code></details>
 
-3. **Схема:** `trips`. **Поля:** `trip_id`, `trip_distance`. **Задача:** Вывести 3 поездки с самой короткой дистанцией (больше 0), отсортировав по ID.
+#### Задание 3. 
+**Схема:** `trips`. 
+
+**Поля:** `trip_id`, `trip_distance`. 
+
+**Задача.** Вывести 3 поездки с самой короткой дистанцией (больше 0), отсортировав по ID.
 <details><summary>Решение</summary><code>SELECT trip_id, trip_distance FROM trips WHERE trip_distance > 0 ORDER BY trip_distance ASC, trip_id ASC LIMIT 3;</code></details>
 
-4. **Схема:** `hits_UserID_URL`. **Поля:** `EventTime`. **Задача:** Вывести время самого раннего (первого) события в таблице.
+#### Задание 4. 
+**Схема:** `hits_UserID_URL`. 
+
+**Поля:** `EventTime`. 
+
+**Задача.** Вывести время самого раннего (первого) события в таблице.
 <details><summary>Решение</summary><code>SELECT min(EventTime) FROM hits_UserID_URL;</code></details>
 
 5. **Схема:** `trips`. **Поля:** `vendor_id`. **Задача:** Вывести список всех доступных идентификаторов поставщиков без повторений.
