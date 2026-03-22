@@ -1,20 +1,16 @@
-Ниже представлена разработанная практическая работа **pr_1.md** и блок из 50 тестовых заданий. Материал структурирован для студентов, изучающих ClickHouse и SQL для анализа данных.
-
----
-
-# Практическая работа №1: Первичные индексы, типы данных и базовые запросы в ClickHouse
+# Практическая работа №1. Первичные индексы, типы данных и базовые запросы в ClickHouse
 
 ## 1. Введение в индексацию ClickHouse
 В отличие от традиционных реляционных БД (PostgreSQL, MySQL), где индекс строится для каждой строки (B-Tree), ClickHouse использует **разреженные индексы**.
 
 **Основные понятия:**
-*   **Гранула (Granule):** Минимальный неделимый набор строк (по умолчанию 8192), который ClickHouse считывает за один раз.
-*   **Метка (Mark):** Запись в индексе, указывающая на начало гранулы.
-*   **Разреженный индекс:** Хранит данные не для каждой строки, а только для первой строки каждой гранулы. Это позволяет индексу целиком помещаться в оперативной памяти.
+*   **Гранула (Granule).** Минимальный неделимый набор строк (по умолчанию 8192), который ClickHouse считывает за один раз.
+*   **Метка (Mark).** Запись в индексе, указывающая на начало гранулы.
+*   **Разреженный индекс.** Хранит данные не для каждой строки, а только для первой строки каждой гранулы. Это позволяет индексу целиком помещаться в оперативной памяти.
 
 ## 2. Создание таблиц и влияние первичного ключа
 
-### Задача 1: Полное сканирование (Full Scan)
+### Задача 1. Полное сканирование (Full Scan)
 Создадим таблицу без первичного ключа и посмотрим, как работает поиск.
 
 ```sql
@@ -30,7 +26,7 @@ PRIMARY KEY tuple(); -- Пустой ключ
 
 При запросе `SELECT ... WHERE UserID = 749927693` ClickHouse будет вынужден прочитать **все** 8.87 млн строк. Это неэффективно.
 
-### Задача 2: Таблица с первичным ключом
+### Задача 2. Таблица с первичным ключом
 Создадим таблицу, где данные физически отсортированы по `UserID` и `URL`.
 
 ```sql
@@ -50,7 +46,7 @@ ORDER BY (UserID, URL, EventTime);
 2.  ClickHouse использует **бинарный поиск** по индексу, если фильтр стоит по первому столбцу ключа (`UserID`).
 3.  Если фильтр стоит по второму столбцу (`URL`), используется **алгоритм исключения**, который эффективен только если у первого столбца (`UserID`) низкая кардинальность (мало уникальных значений).
 
-## 3. Оптимизация: Проекции и Материализованные представления
+## 3. Оптимизация. Проекции и Материализованные представления
 Если нам нужно быстро искать и по `UserID`, и по `URL`, мы используем дублирование данных с разным порядком сортировки.
 
 **Создание проекции:**
@@ -99,320 +95,174 @@ ORDER BY total_clicks DESC;
 
 Ниже приведены задачи для самопроверки. Решения скрыты под спойлерами.
 
-### Блок 1: Базовые запросы (1-10)
-
-1. **Задача:** Выведите все столбцы из таблицы `trips`, ограничив результат первыми 5 строками.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips LIMIT 5;</code>
-</details>
-
-2. **Задача:** Выведите уникальные значения `vendor_id` из таблицы `trips`.
-<details>
-<summary>Решение</summary>
-<code>SELECT DISTINCT vendor_id FROM trips;</code>
-</details>
-
-3. **Задача:** Выведите `trip_id` и `fare_amount`, отсортировав их по стоимости от самой дорогой к дешевой.
-<details>
-<summary>Решение</summary>
-<code>SELECT trip_id, fare_amount FROM trips ORDER BY fare_amount DESC;</code>
-</details>
-
-4. **Задача:** Посчитайте общее количество строк в таблице `hits_NoPrimaryKey`.
-<details>
-<summary>Решение</summary>
-<code>SELECT count() FROM hits_NoPrimaryKey;</code>
-</details>
-
-5. **Задача:** Выведите `pickup_datetime` и `total_amount`, переименовав `total_amount` в `revenue`.
-<details>
-<summary>Решение</summary>
-<code>SELECT pickup_datetime, total_amount AS revenue FROM trips;</code>
-</details>
-
-6. **Задача:** Выведите 10 самых длинных дистанций поездок (`trip_distance`).
-<details>
-<summary>Решение</summary>
-<code>SELECT trip_distance FROM trips ORDER BY trip_distance DESC LIMIT 10;</code>
-</details>
-
-7. **Задача:** Выведите идентификаторы поездок, где стоимость (`fare_amount`) ровно 50.
-<details>
-<summary>Решение</summary>
-<code>SELECT trip_id FROM trips WHERE fare_amount = 50;</code>
-</details>
-
-8. **Задача:** Выведите список всех `URL` без повторений.
-<details>
-<summary>Решение</summary>
-<code>SELECT DISTINCT URL FROM hits_UserID_URL;</code>
-</details>
-
-9. **Задача:** Выведите `UserID`, отсортированный по возрастанию.
-<details>
-<summary>Решение</summary>
-<code>SELECT UserID FROM hits_UserID_URL ORDER BY UserID ASC;</code>
-</details>
-
-10. **Задача:** Выведите все данные о поездках, совершенных `cab_type` = 'yellow'.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE cab_type = 'yellow';</code>
-</details>
+Ниже представлены 50 компактных заданий для системы **CodeRunner**. Каждое задание содержит: схему, необходимые поля, постановку задачи и свернутое решение.
 
 ---
 
-### Блок 2: Фильтрация (WHERE) и типы данных (11-20)
+### Блок 1: Базовая выборка и сортировка
 
-11. **Задача:** Найти поездки с количеством пассажиров больше 4 и стоимостью меньше 20.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE passenger_count > 4 AND fare_amount < 20;</code>
-</details>
+1. **Схема:** `trips`. **Поля:** `trip_id`, `total_amount`. **Задача:** Вывести ID и полную стоимость 5 самых дорогих поездок.
+<details><summary>Решение</summary><code>SELECT trip_id, total_amount FROM trips ORDER BY total_amount DESC LIMIT 5;</code></details>
 
-12. **Задача:** Выведите поездки, совершенные в период между '2016-01-01' и '2016-01-02'.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE pickup_date BETWEEN '2016-01-01' AND '2016-01-02';</code>
-</details>
+2. **Схема:** `hits_UserID_URL`. **Поля:** `UserID`, `URL`. **Задача:** Вывести первые 10 уникальных URL, посещенных пользователями.
+<details><summary>Решение</summary><code>SELECT DISTINCT URL FROM hits_UserID_URL LIMIT 10;</code></details>
 
-13. **Задача:** Найти все записи в `hits`, где `URL` содержит слово 'google'.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM hits_UserID_URL WHERE URL LIKE '%google%';</code>
-</details>
+3. **Схема:** `trips`. **Поля:** `trip_id`, `trip_distance`. **Задача:** Вывести 3 поездки с самой короткой дистанцией (больше 0), отсортировав по ID.
+<details><summary>Решение</summary><code>SELECT trip_id, trip_distance FROM trips WHERE trip_distance > 0 ORDER BY trip_distance ASC, trip_id ASC LIMIT 3;</code></details>
 
-14. **Задача:** Выведите поездки, где `payment_type` является 'CSH' или 'CRE'.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE payment_type IN ('CSH', 'CRE');</code>
-</details>
+4. **Схема:** `hits_UserID_URL`. **Поля:** `EventTime`. **Задача:** Вывести время самого раннего (первого) события в таблице.
+<details><summary>Решение</summary><code>SELECT min(EventTime) FROM hits_UserID_URL;</code></details>
 
-15. **Задача:** Найти поездки, где не указаны чаевые (`tip_amount` равен 0).
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE tip_amount = 0;</code>
-</details>
+5. **Схема:** `trips`. **Поля:** `vendor_id`. **Задача:** Вывести список всех доступных идентификаторов поставщиков без повторений.
+<details><summary>Решение</summary><code>SELECT DISTINCT vendor_id FROM trips;</code></details>
 
-16. **Задача:** Выберите поездки, где дистанция больше 10 миль, но меньше 100.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE trip_distance > 10 AND trip_distance < 100;</code>
-</details>
+6. **Схема:** `trips`. **Поля:** `trip_id`, `fare_amount`. **Задача:** Вывести 5 поездок, где стоимость тарифа (`fare_amount`) находится в диапазоне от 10 до 20, отсортировав по стоимости.
+<details><summary>Решение</summary><code>SELECT trip_id, fare_amount FROM trips WHERE fare_amount BETWEEN 10 AND 20 ORDER BY fare_amount LIMIT 5;</code></details>
 
-17. **Задача:** Выведите `trip_id`, где `vendor_id` НЕ равен 1.
-<details>
-<summary>Решение</summary>
-<code>SELECT trip_id FROM trips WHERE vendor_id != 1;</code>
-</details>
+7. **Схема:** `hits_UserID_URL`. **Поля:** `UserID`, `URL`. **Задача:** Вывести 10 записей для пользователя `UserID` = 2459550954, отсортировав по времени (по убыванию).
+<details><summary>Решение</summary><code>SELECT UserID, URL FROM hits_UserID_URL WHERE UserID = 2459550954 ORDER BY EventTime DESC LIMIT 10;</code></details>
 
-18. **Задача:** Найти поездки, где общая сумма (`total_amount`) больше 1000.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE total_amount > 1000;</code>
-</details>
+8. **Схема:** `trips`. **Поля:** `trip_id`, `passenger_count`. **Задача:** Вывести поездки, где было ровно 3 или 6 пассажиров, ограничить 5 записями.
+<details><summary>Решение</summary><code>SELECT trip_id, passenger_count FROM trips WHERE passenger_count IN (3, 6) LIMIT 5;</code></details>
 
-19. **Задача:** Выведите `URL`, которые заканчиваются на '.ru'.
-<details>
-<summary>Решение</summary>
-<code>SELECT URL FROM hits_UserID_URL WHERE URL LIKE '%.ru';</code>
-</details>
+9. **Схема:** `trips`. **Поля:** `count()`. **Задача:** Посчитать общее количество записей в таблице `trips`.
+<details><summary>Решение</summary><code>SELECT count() FROM trips;</code></details>
 
-20. **Задача:** Найти пользователей (`UserID`), у которых идентификатор в диапазоне от 100 до 500.
-<details>
-<summary>Решение</summary>
-<code>SELECT DISTINCT UserID FROM hits_UserID_URL WHERE UserID >= 100 AND UserID <= 500;</code>
-</details>
+10. **Схема:** `hits_UserID_URL`. **Поля:** `URL`. **Задача:** Вывести 5 URL, которые содержат подстроку 'google'.
+<details><summary>Решение</summary><code>SELECT URL FROM hits_UserID_URL WHERE URL LIKE '%google%' LIMIT 5;</code></details>
 
 ---
 
-### Блок 3: Агрегация и группировка (21-30)
+### Блок 2: Фильтрация и условия (WHERE)
 
-21. **Задача:** Посчитайте среднюю стоимость поездки (`total_amount`).
-<details>
-<summary>Решение</summary>
-<code>SELECT avg(total_amount) FROM trips;</code>
-</details>
+11. **Схема:** `trips`. **Поля:** `trip_id`, `payment_type`. **Задача:** Вывести все поездки, оплаченные наличными (`payment_type` = 'CSH').
+<details><summary>Решение</summary><code>SELECT trip_id, payment_type FROM trips WHERE payment_type = 'CSH';</code></details>
 
-22. **Задача:** Найдите максимальное количество пассажиров в одной поездке.
-<details>
-<summary>Решение</summary>
-<code>SELECT max(passenger_count) FROM trips;</code>
-</details>
+12. **Схема:** `trips`. **Поля:** `trip_id`, `tip_amount`. **Задача:** Найти поездки, где сумма чаевых превышает 50, отсортировать по сумме.
+<details><summary>Решение</summary><code>SELECT trip_id, tip_amount FROM trips WHERE tip_amount > 50 ORDER BY tip_amount DESC;</code></details>
 
-23. **Задача:** Посчитайте количество поездок для каждого `cab_type`.
-<details>
-<summary>Решение</summary>
-<code>SELECT cab_type, count() FROM trips GROUP BY cab_type;</code>
-</details>
+13. **Схема:** `hits_UserID_URL`. **Поля:** `UserID`, `IsRobot`. **Задача:** Вывести уникальные ID пользователей, которые были помечены как боты (`IsRobot` = 1).
+<details><summary>Решение</summary><code>SELECT DISTINCT UserID FROM hits_UserID_URL WHERE IsRobot = 1;</code></details>
 
-24. **Задача:** Найдите суммарную выручку (`total_amount`) по каждой дате `pickup_date`.
-<details>
-<summary>Решение</summary>
-<code>SELECT pickup_date, sum(total_amount) FROM trips GROUP BY pickup_date;</code>
-</details>
+14. **Схема:** `trips`. **Поля:** `trip_id`, `cab_type`. **Задача:** Найти все поездки типа 'green' с дистанцией более 10 миль.
+<details><summary>Решение</summary><code>SELECT trip_id FROM trips WHERE cab_type = 'green' AND trip_distance > 10;</code></details>
 
-25. **Задача:** Выведите `vendor_id`, у которых средняя дистанция поездки больше 5 миль.
-<details>
-<summary>Решение</summary>
-<code>SELECT vendor_id, avg(trip_distance) as avg_dist FROM trips GROUP BY vendor_id HAVING avg_dist > 5;</code>
-</details>
+15. **Схема:** `hits_UserID_URL`. **Поля:** `URL`. **Задача:** Найти записи, где URL заканчивается на '.html'.
+<details><summary>Решение</summary><code>SELECT URL FROM hits_UserID_URL WHERE URL LIKE '%.html' LIMIT 5;</code></details>
 
-26. **Задача:** Посчитайте количество уникальных пользователей в таблице `hits`.
-<details>
-<summary>Решение</summary>
-<code>SELECT uniq(UserID) FROM hits_UserID_URL;</code>
-</details>
+16. **Схема:** `trips`. **Поля:** `trip_id`, `extra`. **Задача:** Вывести поездки, где дополнительные сборы (`extra`) отрицательные или равны нулю.
+<details><summary>Решение</summary><code>SELECT trip_id, extra FROM trips WHERE extra <= 0 LIMIT 5;</code></details>
 
-27. **Задача:** Найти топ-3 даты с самым большим количеством поездок.
-<details>
-<summary>Решение</summary>
-<code>SELECT pickup_date, count() as cnt FROM trips GROUP BY pickup_date ORDER BY cnt DESC LIMIT 3;</code>
-</details>
+17. **Схема:** `trips`. **Поля:** `pickup_date`, `total_amount`. **Задача:** Выбрать поездки за '2016-01-01' стоимостью более 100.
+<details><summary>Решение</summary><code>SELECT * FROM trips WHERE pickup_date = '2016-01-01' AND total_amount > 100;</code></details>
 
-28. **Задача:** Рассчитать общую сумму доплат (`extra`) для каждого типа оплаты.
-<details>
-<summary>Решение</summary>
-<code>SELECT payment_type, sum(extra) FROM trips GROUP BY payment_type;</code>
-</details>
+18. **Схема:** `hits_UserID_URL`. **Поля:** `UserID`. **Задача:** Найти пользователей с ID в диапазоне от 1000000 до 2000000, ограничить 5 результатами.
+<details><summary>Решение</summary><code>SELECT DISTINCT UserID FROM hits_UserID_URL WHERE UserID BETWEEN 1000000 AND 2000000 LIMIT 5;</code></details>
 
-29. **Задача:** Найти минимальную и максимальную стоимость поездки.
-<details>
-<summary>Решение</summary>
-<code>SELECT min(total_amount), max(total_amount) FROM trips;</code>
-</details>
+19. **Схема:** `trips`. **Поля:** `trip_id`, `tolls_amount`. **Задача:** Вывести поездки, в которых оплата за платные дороги (`tolls_amount`) не равна 0.
+<details><summary>Решение</summary><code>SELECT trip_id, tolls_amount FROM trips WHERE tolls_amount != 0 LIMIT 5;</code></details>
 
-30. **Задача:** Посчитать средние чаевые для поездок, где пассажиров больше 2.
-<details>
-<summary>Решение</summary>
-<code>SELECT avg(tip_amount) FROM trips WHERE passenger_count > 2;</code>
-</details>
+20. **Схема:** `trips`. **Поля:** `trip_id`, `passenger_count`. **Задача:** Найти поездки без пассажиров (`passenger_count` = 0).
+<details><summary>Решение</summary><code>SELECT trip_id FROM trips WHERE passenger_count = 0 LIMIT 5;</code></details>
 
 ---
 
-### Блок 4: Даты и строки (31-40)
+### Блок 3: Агрегация (GROUP BY, SUM, AVG)
 
-31. **Задача:** Извлечь год из `pickup_datetime`.
-<details>
-<summary>Решение</summary>
-<code>SELECT toYear(pickup_datetime) FROM trips LIMIT 5;</code>
-</details>
+21. **Схема:** `trips`. **Поля:** `vendor_id`. **Задача:** Посчитать количество поездок для каждого поставщика (`vendor_id`).
+<details><summary>Решение</summary><code>SELECT vendor_id, count() FROM trips GROUP BY vendor_id;</code></details>
 
-32. **Задача:** Извлечь час совершения поездки.
-<details>
-<summary>Решение</summary>
-<code>SELECT toHour(pickup_datetime) FROM trips LIMIT 5;</code>
-</details>
+22. **Схема:** `trips`. **Поля:** `cab_type`. **Задача:** Рассчитать среднюю дистанцию поездки для каждого типа такси.
+<details><summary>Решение</summary><code>SELECT cab_type, avg(trip_distance) FROM trips GROUP BY cab_type;</code></details>
 
-33. **Задача:** Посчитать количество поездок по месяцам.
-<details>
-<summary>Решение</summary>
-<code>SELECT toMonth(pickup_datetime) as m, count() FROM trips GROUP BY m;</code>
-</details>
+23. **Схема:** `hits_UserID_URL`. **Поля:** `UserID`. **Задача:** Найти 5 пользователей с самым большим количеством кликов.
+<details><summary>Решение</summary><code>SELECT UserID, count() as cnt FROM hits_UserID_URL GROUP BY UserID ORDER BY cnt DESC LIMIT 5;</code></details>
 
-34. **Задача:** Выведите `pickup_datetime` в формате 'YYYY-MM-DD'.
-<details>
-<summary>Решение</summary>
-<code>SELECT formatDate(pickup_datetime, '%Y-%m-%d') FROM trips;</code>
-</details>
+24. **Схема:** `trips`. **Поля:** `pickup_date`. **Задача:** Найти суммарную выручку (`total_amount`) по каждой дате.
+<details><summary>Решение</summary><code>SELECT pickup_date, sum(total_amount) FROM trips GROUP BY pickup_date ORDER BY pickup_date;</code></details>
 
-35. **Задача:** Найти поездки, совершенные в воскресенье (номер дня недели 7).
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE toDayOfWeek(pickup_datetime) = 7;</code>
-</details>
+25. **Схема:** `trips`. **Поля:** `payment_type`. **Задача:** Найти максимальную сумму чаевых для каждого способа оплаты.
+<details><summary>Решение</summary><code>SELECT payment_type, max(tip_amount) FROM trips GROUP BY payment_type;</code></details>
 
-36. **Задача:** Перевести `URL` в нижний регистр.
-<details>
-<summary>Решение</summary>
-<code>SELECT lower(URL) FROM hits_UserID_URL LIMIT 5;</code>
-</details>
+26. **Схема:** `trips`. **Поля:** `passenger_count`. **Задача:** Посчитать среднюю стоимость поездки для разного количества пассажиров.
+<details><summary>Решение</summary><code>SELECT passenger_count, avg(total_amount) FROM trips GROUP BY passenger_count;</code></details>
 
-37. **Задача:** Посчитать длину каждого `URL`.
-<details>
-<summary>Решение</summary>
-<code>SELECT length(URL) FROM hits_UserID_URL LIMIT 5;</code>
-</details>
+27. **Схема:** `hits_UserID_URL`. **Поля:** `IsRobot`. **Задача:** Посчитать количество событий отдельно для роботов и людей.
+<details><summary>Решение</summary><code>SELECT IsRobot, count() FROM hits_UserID_URL GROUP BY IsRobot;</code></details>
 
-38. **Задача:** Округлить `total_amount` до целого числа.
-<details>
-<summary>Решение</summary>
-<code>SELECT round(total_amount) FROM trips;</code>
-</details>
+28. **Схема:** `trips`. **Поля:** `vendor_id`. **Задача:** Вывести тех поставщиков, у которых средняя стоимость поездки выше 15 (используйте HAVING).
+<details><summary>Решение</summary><code>SELECT vendor_id, avg(total_amount) as m FROM trips GROUP BY vendor_id HAVING m > 15;</code></details>
 
-39. **Задача:** Найти разницу в секундах между посадкой и высадкой.
-<details>
-<summary>Решение</summary>
-<code>SELECT dateDiff('second', pickup_datetime, dropoff_datetime) FROM trips;</code>
-</details>
+29. **Схема:** `trips`. **Поля:** `cab_type`. **Задача:** Найти общее количество перевезенных пассажиров для каждого типа такси.
+<details><summary>Решение</summary><code>SELECT cab_type, sum(passenger_count) FROM trips GROUP BY cab_type;</code></details>
 
-40. **Задача:** Проверить, является ли дата `pickup_date` первым числом месяца.
-<details>
-<summary>Решение</summary>
-<code>SELECT * FROM trips WHERE toDayOfMonth(pickup_date) = 1;</code>
-</details>
+30. **Схема:** `hits_UserID_URL`. **Поля:** `URL`. **Задача:** Найти ТОП-3 самых посещаемых URL.
+<details><summary>Решение</summary><code>SELECT URL, count() as cnt FROM hits_UserID_URL GROUP BY URL ORDER BY cnt DESC LIMIT 3;</code></details>
 
 ---
 
-### Блок 5: Кейсы, Join и Индексы (41-50)
+### Блок 4: Функции дат и строк
 
-41. **Задача:** С помощью `CASE` классифицируйте поездки: если `total_amount` < 10 — 'Cheap', иначе 'Expensive'.
-<details>
-<summary>Решение</summary>
-<code>SELECT total_amount, CASE WHEN total_amount < 10 THEN 'Cheap' ELSE 'Expensive' END as type FROM trips;</code>
-</details>
+31. **Схема:** `trips`. **Поля:** `pickup_datetime`. **Задача:** Извлечь только час начала поездки из поля `pickup_datetime`.
+<details><summary>Решение</summary><code>SELECT toHour(pickup_datetime) FROM trips LIMIT 5;</code></details>
 
-42. **Задача:** Соедините таблицу `trips` со словарем `taxi_zone_dictionary` по `pickup_nyct2010_gid`.
-<details>
-<summary>Решение</summary>
-<code>SELECT t.*, d.Borough FROM trips t JOIN taxi_zone_dictionary d ON toUInt64(t.pickup_nyct2010_gid) = d.LocationID;</code>
-</details>
+32. **Схема:** `trips`. **Поля:** `pickup_date`. **Задача:** Посчитать количество поездок, совершенных в понедельник (код 1).
+<details><summary>Решение</summary><code>SELECT count() FROM trips WHERE toDayOfWeek(pickup_date) = 1;</code></details>
 
-43. **Задача:** Выведите название района (`Borough`) из словаря для `LocationID` = 132 (используя `dictGet`).
-<details>
-<summary>Решение</summary>
-<code>SELECT dictGet('taxi_zone_dictionary', 'Borough', 132);</code>
-</details>
+33. **Схема:** `hits_UserID_URL`. **Поля:** `EventTime`. **Задача:** Вывести год совершения события для первых 5 записей.
+<details><summary>Решение</summary><code>SELECT toYear(EventTime) FROM hits_UserID_URL LIMIT 5;</code></details>
 
-44. **Задача:** Почему запрос `WHERE URL = '...'` работает медленно в таблице с ключом `(UserID, URL)`?
-<details>
-<summary>Решение</summary>
-<code>Потому что URL - второй столбец в ключе, и ClickHouse не может использовать эффективный бинарный поиск, если не указан UserID.</code>
-</details>
+34. **Схема:** `trips`. **Поля:** `pickup_datetime`, `dropoff_datetime`. **Задача:** Рассчитать длительность поездки в секундах для первых 5 строк.
+<details><summary>Решение</summary><code>SELECT dateDiff('second', pickup_datetime, dropoff_datetime) FROM trips LIMIT 5;</code></details>
 
-45. **Задача:** Как принудительно объединить части таблицы в MergeTree?
-<details>
-<summary>Решение</summary>
-<code>OPTIMIZE TABLE table_name FINAL;</code>
-</details>
+35. **Схема:** `hits_UserID_URL`. **Поля:** `URL`. **Задача:** Привести все URL к нижнему регистру и вывести первые 5.
+<details><summary>Решение</summary><code>SELECT lower(URL) FROM hits_UserID_URL LIMIT 5;</code></details>
 
-46. **Задача:** Какая функция в ClickHouse используется для генерации хеша от строки?
-<details>
-<summary>Решение</summary>
-<code>cityHash64(string) или farmHash64(string).</code>
-</details>
+36. **Схема:** `trips`. **Поля:** `pickup_date`. **Задача:** Показать количество поездок по месяцам.
+<details><summary>Решение</summary><code>SELECT toMonth(pickup_date) as month, count() FROM trips GROUP BY month;</code></details>
 
-47. **Задача:** Выполните `LEFT JOIN` между `trips` и словарем, чтобы оставить все поездки, даже если района нет в словаре.
-<details>
-<summary>Решение</summary>
-<code>SELECT t.trip_id, d.Borough FROM trips t LEFT JOIN taxi_zone_dictionary d ON toUInt64(t.pickup_nyct2010_gid) = d.LocationID;</code>
-</details>
+37. **Схема:** `trips`. **Поля:** `total_amount`. **Задача:** Округлить стоимость каждой поездки до целого числа.
+<details><summary>Решение</summary><code>SELECT round(total_amount) FROM trips LIMIT 5;</code></details>
 
-48. **Задача:** Напишите запрос, который возвращает 1, если в словаре есть ключ 132, и 0 если нет.
-<details>
-<summary>Решение</summary>
-<code>SELECT dictHas('taxi_zone_dictionary', 132);</code>
-</details>
+38. **Схема:** `hits_UserID_URL`. **Поля:** `URL`. **Задача:** Посчитать длину строки каждого URL и вывести 5 записей.
+<details><summary>Решение</summary><code>SELECT length(URL) FROM hits_UserID_URL LIMIT 5;</code></details>
 
-49. **Задача:** Как посмотреть размер первичного индекса таблицы в памяти?
-<details>
-<summary>Решение</summary>
-<code>SELECT primary_key_bytes_in_memory FROM system.parts WHERE table = 'имя_таблицы';</code>
-</details>
+39. **Схема:** `trips`. **Поля:** `pickup_datetime`. **Задача:** Найти все поездки, совершенные после 23:00.
+<details><summary>Решение</summary><code>SELECT * FROM trips WHERE toHour(pickup_datetime) >= 23 LIMIT 5;</code></details>
 
-50. **Задача:** Создайте материализованное представление, которое считает сумму `total_amount` по дням.
-<details>
-<summary>Решение</summary>
-<code>CREATE MATERIALIZED VIEW daily_revenue ENGINE = SummingMergeTree() ORDER BY pickup_date AS SELECT pickup_date, sum(total_amount) as revenue FROM trips GROUP BY pickup_date;</code>
-</details>
+40. **Схема:** `trips`. **Поля:** `pickup_date`. **Задача:** Вывести дату в формате 'DD.MM.YYYY' (используйте formatDate).
+<details><summary>Решение</summary><code>SELECT formatDate(pickup_date, '%d.%m.%Y') FROM trips LIMIT 5;</code></details>
+
+---
+
+### Блок 5: Кейсы, JOIN и словари
+
+41. **Схема:** `trips`. **Поля:** `total_amount`. **Задача:** Если стоимость > 50, вывести 'high', иначе 'low' (используйте CASE).
+<details><summary>Решение</summary><code>SELECT total_amount, CASE WHEN total_amount > 50 THEN 'high' ELSE 'low' END FROM trips LIMIT 5;</code></details>
+
+42. **Схема:** `trips`, `taxi_zone_dictionary`. **Задача:** Получить название боро (`Borough`) для каждой поездки, используя `JOIN` по полю `pickup_nyct2010_gid`.
+<details><summary>Решение</summary><code>SELECT t.trip_id, d.Borough FROM trips t JOIN taxi_zone_dictionary d ON toUInt64(t.pickup_nyct2010_gid) = d.LocationID LIMIT 5;</code></details>
+
+43. **Схема:** `trips`. **Поля:** `pickup_nyct2010_gid`. **Задача:** Получить название зоны (`Zone`) через функцию `dictGet` из словаря `taxi_zone_dictionary`.
+<details><summary>Решение</summary><code>SELECT dictGet('taxi_zone_dictionary', 'Zone', toUInt64(pickup_nyct2010_gid)) FROM trips LIMIT 5;</code></details>
+
+44. **Схема:** `trips`, `taxi_zone_dictionary`. **Задача:** Посчитать количество поездок для каждого района (`Borough`) через JOIN.
+<details><summary>Решение</summary><code>SELECT d.Borough, count() FROM trips t JOIN taxi_zone_dictionary d ON toUInt64(t.pickup_nyct2010_gid) = d.LocationID GROUP BY d.Borough;</code></details>
+
+45. **Схема:** `hits_UserID_URL`. **Поля:** `IsRobot`. **Задача:** Заменить 1 на 'Robot', 0 на 'Human' в итоговой выборке.
+<details><summary>Решение</summary><code>SELECT CASE WHEN IsRobot = 1 THEN 'Robot' ELSE 'Human' END as type FROM hits_UserID_URL LIMIT 5;</code></details>
+
+46. **Схема:** `trips`. **Поля:** `trip_id`, `tip_amount`, `fare_amount`. **Задача:** Вывести процент чаевых от основной стоимости тарифа.
+<details><summary>Решение</summary><code>SELECT trip_id, (tip_amount / fare_amount) * 100 FROM trips WHERE fare_amount > 0 LIMIT 5;</code></details>
+
+47. **Схема:** `trips`. **Поля:** `dictHas`. **Задача:** Проверить, существует ли в словаре `taxi_zone_dictionary` ключ с ID 132.
+<details><summary>Решение</summary><code>SELECT dictHas('taxi_zone_dictionary', 132);</code></details>
+
+48. **Схема:** `trips`, `taxi_zone_dictionary`. **Задача:** Найти среднюю стоимость поездки для района 'Manhattan' (через JOIN).
+<details><summary>Решение</summary><code>SELECT avg(t.total_amount) FROM trips t JOIN taxi_zone_dictionary d ON toUInt64(t.pickup_nyct2010_gid) = d.LocationID WHERE d.Borough = 'Manhattan';</code></details>
+
+49. **Схема:** `hits_UserID_URL`. **Поля:** `EventTime`. **Задача:** Найти количество событий, совершенных в утренние часы (с 6 до 11 утра).
+<details><summary>Решение</summary><code>SELECT count() FROM hits_UserID_URL WHERE toHour(EventTime) BETWEEN 6 AND 11;</code></details>
+
+50. **Схема:** `trips`. **Поля:** `trip_id`. **Задача:** Найти поездки, где дистанция больше 0, но стоимость равна 0.
+<details><summary>Решение</summary><code>SELECT trip_id FROM trips WHERE trip_distance > 0 AND total_amount = 0;</code></details>
