@@ -102,11 +102,8 @@ ORDER BY total_clicks DESC;
 ### Блок 1: Базовая выборка и сортировка
 
 #### Задание 1.
-
 **Схема:** `trips`.
-
 **Поля:** `trip_id`, `total_amount`. 
-
 **Задача.** Вывести ID и полную стоимость 5 самых дорогих поездок.
 <details><summary>Решение</summary><code>SELECT trip_id, total_amount FROM trips ORDER BY total_amount DESC LIMIT 5;</code></details>
 
