@@ -261,7 +261,7 @@ SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-t
 LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED_ARRAY());
 ```
-> **Примечание:** Установка `LIFETIME` в 0 отключает автоматические обновления для экономии трафика.
+> **Примечание.** Установка `LIFETIME` в 0 отключает автоматические обновления для экономии трафика.
 
 **Проверка работы словаря:**
 ```sql
