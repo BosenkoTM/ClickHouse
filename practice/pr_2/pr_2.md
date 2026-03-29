@@ -180,7 +180,7 @@ SELECT * FROM s3(
     `pickup_ct2010` String,
     `pickup_boroct2010` String,
     `pickup_cdeligibil` String,
-    `pickup_ntacode" FixedString(4),
+    `pickup_ntacode` FixedString(4),
     `pickup_ntaname` String,
     `pickup_puma` UInt16,
     `dropoff_nyct2010_gid` UInt8,
@@ -192,7 +192,7 @@ SELECT * FROM s3(
     `dropoff_ntacode` FixedString(4),
     `dropoff_ntaname` String,
     `dropoff_puma` UInt16
-") SETTINGS input_format_try_infer_datetimes = 0;
+") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
 > **Примечание:** дождитесь завершения выполнения команды `INSERT`. Загрузка 150 МБ данных может занять некоторое время.
