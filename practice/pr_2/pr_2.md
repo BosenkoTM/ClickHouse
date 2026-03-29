@@ -12,16 +12,25 @@
 ## Архитектура решения
 
 ```mermaid
-graph LR
-    classDef s3 fill:#FF9900,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef ch fill:#34A853,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef client fill:#4285F4,stroke:#fff,stroke-width:2px,color:#fff;
+---
+config:
+  layout: fixed
+---
+flowchart LR
+    S3[("Amazon S3 <br> TSV.GZ Files")] -- "INSERT INTO ... FROM s3" --> CH{"ClickHouse Server"}
+    HTTP["External CSV"] -- CREATE DICTIONARY --> CH
+    CH --> T["Table: trips"] & D["Dictionary: taxi_zone"]
+    U["Student / CloudBeaver"] -- SQL Queries --> CH
 
-    S3[(Amazon S3 <br> TSV.GZ Files)]:::s3 -->|INSERT INTO ... FROM s3()| CH{ClickHouse Server}:::ch
-    HTTP[External CSV]:::s3 -->|CREATE DICTIONARY| CH
-    CH --> T[Table: trips]:::ch
-    CH --> D[Dictionary: taxi_zone]:::ch
-    U[Student / CloudBeaver]:::client -->|SQL Queries| CH
+     S3:::s3
+     CH:::ch
+     HTTP:::s3
+     T:::ch
+     D:::ch
+     U:::client
+    classDef s3 fill:#FF9900,stroke:#fff,stroke-width:2px,color:#fff
+    classDef ch fill:#34A853,stroke:#fff,stroke-width:2px,color:#fff
+    classDef client fill:#4285F4,stroke:#fff,stroke-width:2px,color:#fff
 ```
 
 
