@@ -389,6 +389,6 @@ SELECT * FROM taxi_zone_dictionary;
 
 | Программа обучения | Ссылка на курс | Практическая работа (Отчет) | Тренажер (CodeRunner) |
 | :--- | :--- | :--- | :--- |
-| **Дополнительное образование** | [Курс (id=33)](https://envlab.ru/course/view.php?id=33) | — | [Тест 5 (Анализ)](https://envlab.ru/mod/quiz/view.php?id=1142) |
+| **Дополнительное образование** | [Курс](https://envlab.ru/course/view.php?id=34) | — | [Тест 2 (Анализ)](https://envlab.ru/mod/quiz/view.php?id=1186) |
 | **Бакалавриат: Бизнес-информатика** | [Курс (id=13)](https://envlab.ru/course/view.php?id=13) | [Загрузить отчет №2](https://envlab.ru/mod/assign/view.php?id=1141) | [Тест 5 (Анализ)](https://envlab.ru/mod/quiz/view.php?id=1142) |
 
