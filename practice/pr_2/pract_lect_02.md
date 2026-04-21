@@ -54,17 +54,17 @@ ORDER BY (faculty, event_type, event_time);
 INSERT INTO lms_events (event_time, student_id, is_successful, faculty, event_type, platform, tags, test_scores)
 VALUES 
 -- Студенты IT-факультета сдают тесты и смотрят видео
-('2024-10-25 10:15:00.123', 1001, true, 'IT_Faculty', 'quiz_submit', 'Desktop', ['python', 'backend'], {'task_1': 10, 'task_2': 10, 'task_3': 8}),
-('2024-10-25 10:20:45.000', 1002, false, 'IT_Faculty', 'quiz_submit', 'Mobile_App', ['python', 'backend'], {'task_1': 10, 'task_2': 0, 'task_3': 0}),
-('2024-10-25 11:05:10.555', 1001, true, 'IT_Faculty', 'video_play', 'Desktop', ['python', 'async'], map()),
+('2024-10-25 10:15:00.123', 1001, true, 'IT_Faculty', 'quiz_submit', 'Desktop', ['python', 'backend'], map('task_1', 10, 'task_2', 10, 'task_3', 8)),
+('2024-10-25 10:20:45.000', 1002, false, 'IT_Faculty', 'quiz_submit', 'Mobile_App', ['python', 'backend'], map('task_1', 10, 'task_2', 0, 'task_3', 0)),
+('2024-10-25 11:05:10.555', 1001, true, 'IT_Faculty', 'video_play', 'Desktop',['python', 'async'], map()),
 
 -- Студенты экономического факультета
 ('2024-10-25 09:30:00.000', 2050, true, 'Economics', 'material_download', 'Desktop', ['macroeconomics', 'graphs'], map()),
-('2024-10-25 14:15:33.777', 2051, true, 'Economics', 'quiz_submit', 'Mobile_Web', ['microeconomics'], {'q_math': 5, 'q_theory': 4}),
+('2024-10-25 14:15:33.777', 2051, true, 'Economics', 'quiz_submit', 'Mobile_Web', ['microeconomics'], map('q_math', 5, 'q_theory', 4)),
 
 -- Студент гуманитарного факультета
 ('2024-10-25 16:40:22.111', 3100, true, 'Humanities', 'video_play', 'Mobile_App', ['history', '20_century'], map()),
-('2024-10-25 17:00:00.000', 3100, true, 'Humanities', 'quiz_submit', 'Mobile_App', ['history'], {'essay': 95});
+('2024-10-25 17:00:00.000', 3100, true, 'Humanities', 'quiz_submit', 'Mobile_App', ['history'], map('essay', 95));
 ```
 
 ---
