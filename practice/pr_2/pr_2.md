@@ -311,19 +311,19 @@ SELECT * FROM taxi_zone_dictionary;
 
 ### Функции для работы со словарем:
 
-*   **dictGet:** Извлечение значения по ключу.
+*   **dictGet.** Извлечение значения по ключу.
     ```sql
     SELECT dictGet('taxi_zone_dictionary', 'Borough', 132);
     -- Результат: Queens (аэропорт JFK).
     ```
 
-*   **dictHas:** Проверка наличия ключа в словаре.
+*   **dictHas.** Проверка наличия ключа в словаре.
     ```sql
     SELECT dictHas('taxi_zone_dictionary', 132); -- Вернет 1 (true)
     SELECT dictHas('taxi_zone_dictionary', 4567); -- Вернет 0 (false)
     ```
 
-*   **dictGetOrDefault:** Использование в сложном запросе (подсчет поездок в аэропорты по боро):
+*   **dictGetOrDefault.** Использование в сложном запросе (подсчет поездок в аэропорты по боро):
     ```sql
     SELECT
         count(1) AS total,
