@@ -15,7 +15,7 @@
 *Записи трансляций и материалы, которые мы разбираем в прямом эфире:*
 
 - 📅 **21-04-2026** | [Вебинар "Типы данных"](https://envlab.ru/mod/lesson/view.php?id=1234)
-- 📅 **21-04-2026** |[Практическая работа на вебинаре](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_2/pr_2.md)
+- 📅 **21-04-2026** |[Практическая работа на вебинаре](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_2)
 
 ---
 
