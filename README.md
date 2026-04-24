@@ -15,10 +15,10 @@
 *Записи трансляций и материалы, которые мы разбираем в прямом эфире:*
 
 - 📅 **21-04-2026** | [Вебинар "Типы данных"](https://envlab.ru/mod/lesson/view.php?id=1234)
-- 📅 **21-04-2026** |[Практическая работа на вебинаре](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_2)
+- [Сквозной пример "Типы данных" ](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_2)
 
 - 📅 **24-04-2026** | [Вебинар "SQL"](https://envlab.ru/mod/lesson/view.php?id=1235)
-- 📅 **24-04-2026** |[Практическая работа на вебинаре](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_03/pract_lect_03.md)
+- [Сквозной пример "SQL"](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_03/pract_lect_03.md)
 ---
 
 ## 📘 Тема 1. Основы SQL для аналитики
