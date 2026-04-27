@@ -95,7 +95,7 @@ sequenceDiagram
 
 Так как у вас нет прямого доступа к серверу СlickHouse для копирования файлов, мы будем использовать Python. В этом шаге мы не просто читаем CSV, но и **жестко приводим типы данных** к типам DDL (базы данных), чтобы избежать ошибок вставки.
 
-1. Скачайте файл датасета `Student_performance_data _.csv` с Kaggle.
+1. Скачайте файл датасета [Student_performance_data _.csv](/practice/pr_04/Student_performance_data%20_.csv) с Kaggle.
 2. Загрузите файл в сессионное хранилище Google Colab.
 3. Выполните следующий скрипт или [скачать готовый скрипт тестирования дашборда](/practice/pr_04/ch_student.ipynb):
 
