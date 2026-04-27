@@ -19,6 +19,10 @@
 
 - 📅 **24-04-2026** | [Вебинар "SQL"](https://envlab.ru/mod/lesson/view.php?id=1235)
 - [Сквозной пример "SQL"](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_03/pract_lect_03.md)
+
+- - 📅 **28-04-2026** | [Аналитика успеваемости школьников](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_04/ch_datalens2.md)
+- [Сквозной пример](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_04/ch_student.ipynb)
+
 ---
 
 ## 📘 Тема 1. Основы SQL для аналитики
