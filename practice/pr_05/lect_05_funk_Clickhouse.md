@@ -170,12 +170,12 @@ flowchart LR
 ```sql
 SELECT
     student_id,
-    min(registration_date) AS registration_date,
+    min(registration_date) AS reg_date,
     minIf(event_time, event_type = 'first_login') AS first_login,
-    dateDiff('day', min(registration_date), minIf(event_time, event_type = 'first_login')) AS days_to_activation
+    dateDiff('day', reg_date, first_login) AS days_to_activation
 FROM lect_04_lms_events
 GROUP BY student_id
-ORDER BY student_id;
+ORDER BY student_id
 ```
 
 > ### 🧩 Задание C1
