@@ -23,7 +23,7 @@
 - 📅 **28-04-2026** | [Аналитика успеваемости школьников](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_04/ch_datalens2.md)
 - [Сквозной пример](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_04/ch_student.ipynb)
 
-- - 📅 **05-05-2026** | [Вебинар "Функции Clickhouse"](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_05/lect_05_funk_Clickhouse.md)
+-  📅 **05-05-2026** | [Вебинар "Функции Clickhouse"](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_05/lect_05_funk_Clickhouse.md)
 - [Сквозной пример](https://github.com/BosenkoTM/ClickHouse/blob/main/practice/pr_05/pr_05.ipynb)
 
 ---
