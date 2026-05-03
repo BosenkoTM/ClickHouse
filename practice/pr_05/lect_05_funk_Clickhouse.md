@@ -188,12 +188,12 @@ ORDER BY student_id
 ```sql
 SELECT
     student_id,
-    min(birth_date) AS birth_date,
-    min(registration_date) AS registration_date,
+    min(birth_date) AS b_date,
+    min(registration_date) AS reg_date,
     dateDiff('year', min(birth_date), min(registration_date)) AS age_at_registration
 FROM lect_04_lms_events
 GROUP BY student_id
-ORDER BY student_id;
+ORDER BY student_id
 ```
 *Ответ на вопрос:* `dateDiff` с аргументом `'year'` считает только пересечения 1 января. Человек, родившийся 31 декабря 2000 года и зарегистрировавшийся 2 января 2001 года, получит возраст "1 год", хотя ему всего 3 дня.
 </details>
