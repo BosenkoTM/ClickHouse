@@ -423,19 +423,6 @@ FROM student_level;
 ### Задание 1. Недельный профиль
 Постройте распределение **уникальных активных студентов** (DAU/WAU паттерн) по дням недели.
 
-<details>
-<summary>👀 <b>Решение 1</b></summary>
-
-```sql
-SELECT 
-    toDayOfWeek(event_time) AS week_day,
-    uniq(student_id) AS unique_active_students
-FROM lect_04_lms_events
-WHERE event_type != 'registered'
-GROUP BY week_day
-ORDER BY week_day;
-```
-</details>
 
 ### Задание 2. Доля завершения
 Посчитайте **долю (в процентах)** студентов, которые дошли до `final_test_passed` от общего числа зарегистрированных.
@@ -455,69 +442,15 @@ FROM lect_04_lms_events;
 ### Задание 3. Траектория риска
 С помощью массивов выведите массив `events` (все события) только для тех студентов, у которых в траектории встречается `warning` или `dropout`.
 
-<details>
-<summary>👀 <b>Решение 3</b></summary>
 
-```sql
-WITH student_tracks AS (
-    SELECT 
-        student_id,
-        groupArray(event_type) AS track
-    FROM (SELECT * FROM lect_04_lms_events ORDER BY event_time)
-    GROUP BY student_id
-)
-SELECT 
-    student_id, 
-    track
-FROM student_tracks
-WHERE hasAny(track,['warning', 'dropout']);
-```
-</details>
 
 ### Задание 4. Скорость прохождения
 Посчитайте **среднее количество дней**, за которое студенты доходят от `registration_date` до события `final_test_passed`. Учитывайте только тех, кто сдал финал!
 
-<details>
-<summary>👀 <b>Решение 4</b></summary>
 
-```sql
-WITH student_times AS (
-    SELECT
-        student_id,
-        min(registration_date) AS reg_date,
-        minIf(event_time, event_type = 'final_test_passed') AS final_time
-    FROM lect_04_lms_events
-    GROUP BY student_id
-    HAVING final_time IS NOT NULL
-)
-SELECT
-    round(avg(dateDiff('day', reg_date, final_time)), 1) AS avg_days_to_complete
-FROM student_times;
-```
-</details>
 
 ### Задание 5. Продвинутый трек
 Разделите студентов на 2 когорты: те, кто начал модули `ADV1` или `ADV2`, и те, кто не начинал. Сравните их средний балл за `final_test_passed`.
 
-<details>
-<summary>👀 <b>Решение 5</b></summary>
 
-```sql
-WITH advanced_flags AS (
-    SELECT 
-        student_id,
-        hasAny(groupArray(module_id),['ADV1', 'ADV2']) AS is_advanced,
-        maxIf(score, event_type = 'final_test_passed') AS final_score
-    FROM lect_04_lms_events
-    GROUP BY student_id
-    HAVING final_score IS NOT NULL
-)
-SELECT 
-    if(is_advanced = 1, 'Продвинутые', 'Обычные') AS cohort,
-    count() AS students_count,
-    round(avg(final_score), 1) AS avg_final_score
-FROM advanced_flags
-GROUP BY cohort;
-```
-</details>
 ```
